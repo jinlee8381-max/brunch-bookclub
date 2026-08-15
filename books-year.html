@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#9A6070">
+<title>연간 도서 | 부런치 북클럽</title>
+<style>
+  :root{
+    --bg:#F4EDE1;--card:#FFFDF7;--text:#3B2E24;--text-mid:#7C6A57;--text-mute:#A99883;
+    --wine:#BE7C71;--wine-dark:#A0605A;--wine-light:#DCB2A9;--wine-pale:#F1E3D9;
+    --border:#E9DDC8;--shadow:0 6px 22px rgba(120,88,62,.10);--r:22px;--r-sm:13px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    background:url("images/background.jpg") center center/cover no-repeat;background-attachment:fixed;
+    color:var(--text);-webkit-font-smoothing:antialiased;min-height:100vh;}
+  .wrap{max-width:520px;margin:0 auto;padding:0 18px 40px;}
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:10;background:rgba(248,241,228,.9);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;gap:10px;padding:14px 0 10px;}
+  .back{width:38px;height:38px;border-radius:12px;border:1.5px solid var(--border);background:#fff;
+    display:flex;align-items:center;justify-content:center;text-decoration:none;color:var(--wine-dark);font-size:1.1rem;flex-shrink:0;}
+  .topbar b{font-size:1.05rem;font-weight:900;color:var(--wine-dark);}
+  /* hero */
+  .hero{text-align:center;padding:24px 0 20px;}
+  .hero .badge{display:inline-block;font-size:.68rem;font-weight:800;letter-spacing:.14em;color:var(--wine);
+    background:var(--wine-pale);padding:5px 14px;border-radius:100px;margin-bottom:14px;text-transform:uppercase;}
+  .hero h1{font-size:1.7rem;font-weight:900;letter-spacing:-.04em;line-height:1.25;}
+  .hero p{color:var(--text-mid);font-size:.92rem;margin-top:8px;line-height:1.6;}
+  /* month grid 3x4 */
+  .m-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:4px;}
+  .m-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-sm);padding:14px 8px 13px;
+    box-shadow:var(--shadow);text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .m-card:active{transform:scale(.97);}
+  .m-mon{font-size:.72rem;font-weight:800;color:var(--wine);margin-bottom:8px;}
+  .m-cover{width:60px;height:84px;border-radius:8px;background:linear-gradient(135deg,var(--wine-light),var(--wine));
+    display:flex;align-items:center;justify-content:center;font-size:1.5rem;overflow:hidden;box-shadow:0 4px 12px rgba(154,96,112,.25);margin-bottom:10px;}
+  .m-cover img{width:100%;height:100%;object-fit:cover;}
+  .m-en{font-family:Georgia,"Times New Roman",serif;font-size:.78rem;font-weight:700;line-height:1.25;word-break:keep-all;color:var(--wine-dark);}
+  .m-ko{font-size:.67rem;color:var(--text-mid);margin-top:3px;line-height:1.25;word-break:keep-all;}
+  .m-card.tbd{opacity:.55;}
+  .m-card.tbd .m-cover{background:var(--wine-pale);color:var(--wine-light);}
+  .note{text-align:center;color:var(--text-mute);font-size:.8rem;margin-top:18px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <a class="back" href="https://brunch-bookclub-app.netlify.app/app.html">←</a>
+    <b>연간 도서</b>
+  </div>
+
+  <div class="hero">
+    <span class="badge">2026 Reading List</span>
+    <h1>2026 부런치<br>연간 도서</h1>
+    <p>1년간 함께 읽을 자기계발 영어 원서<br>매달 한 권씩, 성장의 기록을 쌓아가요 📚</p>
+  </div>
+
+  <!-- 월별 도서 3x4 그리드 (2026 · 1월~12월) -->
+  <div class="m-grid">
+
+    <a class="m-card" href="books-month.html?book=01">
+      <div class="m-mon">1월</div><div class="m-cover"><img src="images/book-01.png" alt=""></div>
+      <div class="m-en">Secrets of the Millionaire Mind</div><div class="m-ko">T. Harv Eker</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=02">
+      <div class="m-mon">2월</div><div class="m-cover"><img src="images/book-02.png" alt=""></div>
+      <div class="m-en">Show Your Work!</div><div class="m-ko">Austin Kleon</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=03">
+      <div class="m-mon">3월</div><div class="m-cover"><img src="images/book-03.png" alt=""></div>
+      <div class="m-en">Think Like a Monk</div><div class="m-ko">Jay Shetty</div>
+    </a>
+
+    <a class="m-card" href="books-month.html?book=04">
+      <div class="m-mon">4월</div><div class="m-cover"><img src="images/book-04.png" alt=""></div>
+      <div class="m-en">Made to Stick</div><div class="m-ko">Chip &amp; Dan Heath</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=05">
+      <div class="m-mon">5월</div><div class="m-cover"><img src="images/book-05.png" alt=""></div>
+      <div class="m-en">Keep Going</div><div class="m-ko">Austin Kleon</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=06">
+      <div class="m-mon">6월</div><div class="m-cover"><img src="images/book-06.png" alt=""></div>
+      <div class="m-en">The Subtle Art of Not Giving a F*ck</div><div class="m-ko">Mark Manson</div>
+    </a>
+
+    <a class="m-card" href="books-month.html?book=07">
+      <div class="m-mon">7월</div><div class="m-cover"><img src="images/book-07.png" alt=""></div>
+      <div class="m-en">Man's Search for Meaning</div><div class="m-ko">Viktor E. Frankl</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=08">
+      <div class="m-mon">8월</div><div class="m-cover"><img src="images/book-aug.png" alt="The 10X Rule"></div>
+      <div class="m-en">The 10X Rule</div><div class="m-ko">Grant Cardone</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=09">
+      <div class="m-mon">9월</div><div class="m-cover"><img src="images/book-09.png" alt=""></div>
+      <div class="m-en">You Are a Badass</div><div class="m-ko">Jen Sincero</div>
+    </a>
+
+    <a class="m-card" href="books-month.html?book=10">
+      <div class="m-mon">10월</div><div class="m-cover"><img src="images/book-10.png" alt=""></div>
+      <div class="m-en">Zero to One</div><div class="m-ko">Peter Thiel</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=11">
+      <div class="m-mon">11월</div><div class="m-cover"><img src="images/book-11.png" alt=""></div>
+      <div class="m-en">Steal Like an Artist</div><div class="m-ko">Austin Kleon</div>
+    </a>
+    <a class="m-card" href="books-month.html?book=12">
+      <div class="m-mon">12월</div><div class="m-cover"><img src="images/book-12.png" alt=""></div>
+      <div class="m-en">Quiet</div><div class="m-ko">Susan Cain</div>
+    </a>
+
+  </div>
+
+  <p class="note">📌 매달 한 권씩, 카드를 누르면 월별 상세 소개로 이동해요.</p>
+
+</div>
+</body>
+</html>
