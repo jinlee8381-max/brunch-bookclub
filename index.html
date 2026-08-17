@@ -176,48 +176,22 @@
     .diag-tx b { display: block; font-size: .92rem; color: var(--wine-dark); font-weight: 800; margin-bottom: 2px; }
     .diag-arrow { color: var(--wine); font-weight: 800; flex-shrink: 0; }
 
-    /* ── 무료 진단 박스 (가격 직전) ── */
-    .diag-section { background: var(--card); padding: 48px 0; }
-    .diag-box {
-      background: linear-gradient(160deg, var(--wine-pale) 0%, #FDF6F8 55%, var(--card) 100%);
-      border: 2px solid var(--wine-light);
-      border-radius: var(--r);
-      padding: 30px 24px 26px;
-      text-align: center;
-      box-shadow: var(--shadow);
+    /* ── 무료 진단 안내 (가격 직전, 작게) ── */
+    .diag-section { padding: 26px 0 0; }
+    .diag-slim {
+      display: flex; align-items: center; gap: 12px;
+      padding: 14px 16px; text-decoration: none;
+      background: #FCFBF8; border: 1px solid #E6E1D8;
+      border-radius: 14px; transition: all .2s;
     }
-    .diag-box-label {
-      display: inline-block; font-size: .7rem; font-weight: 800;
-      letter-spacing: .15em; color: #fff; background: var(--wine);
-      padding: 5px 15px; border-radius: 100px; margin-bottom: 16px;
+    .diag-slim:hover { background: #F7F4EE; border-color: #D8D2C6; }
+    .diag-slim-ico { font-size: 1.15rem; flex-shrink: 0; opacity: .8; }
+    .diag-slim-tx { flex: 1; font-size: .8rem; color: var(--text-mute); line-height: 1.5; }
+    .diag-slim-tx b {
+      display: block; font-size: .89rem; font-weight: 700;
+      color: var(--text-mid); margin-bottom: 2px; letter-spacing: -.01em;
     }
-    .diag-box-title {
-      font-size: 1.35rem; font-weight: 900; color: var(--text);
-      line-height: 1.35; letter-spacing: -.04em; margin-bottom: 12px;
-    }
-    .diag-box-desc {
-      font-size: .89rem; color: var(--text-mid);
-      line-height: 1.75; margin-bottom: 20px;
-    }
-    .diag-box-desc strong { color: var(--wine-dark); font-weight: 700; }
-
-    .diag-box-list {
-      list-style: none; text-align: left;
-      background: rgba(255,255,255,.75);
-      border-radius: var(--r-sm);
-      padding: 16px 18px; margin-bottom: 22px;
-    }
-    .diag-box-list li {
-      font-size: .86rem; color: var(--text); line-height: 1.6;
-      padding-left: 22px; position: relative;
-    }
-    .diag-box-list li + li { margin-top: 9px; }
-    .diag-box-list li::before {
-      content: '✓'; position: absolute; left: 0; top: 0;
-      color: var(--wine); font-weight: 800;
-    }
-
-    .diag-box-note { font-size: .78rem; color: var(--text-mute); margin-top: 11px; }
+    .diag-slim-arrow { color: #B5AE9F; font-size: .95rem; flex-shrink: 0; }
 
     /* ── 모집 대상 ── */
     .target-section { background: var(--card); }
@@ -883,28 +857,17 @@
   </div>
 </section>
 
-<!-- ── 무료 리딩 진단 (가격 직전, 망설임 지점에서 한 번 더) ── -->
-<section class="section diag-section">
+<!-- ── 무료 리딩 진단 (작게, 신청 흐름을 막지 않도록) ── -->
+<section class="diag-section">
   <div class="container">
-    <div class="diag-box">
-      <span class="diag-box-label">무료 진단</span>
-      <h2 class="diag-box-title">신청 전에,<br>내 리딩 레벨부터 확인해보세요</h2>
-      <p class="diag-box-desc">
-        20년 넘게 성인 영어를 가르쳐 온 LJ쌤이 만든 진단이에요.
-        실제 영어 지문을 읽으며 <strong>독해력·읽기 속도·독서 습관</strong>을 함께 분석하고,
-        지금 내 수준에 맞는 원서까지 알려드려요.
-      </p>
-
-      <ul class="diag-box-list">
-        <li>현재 내 원서 리딩 레벨과 종합점수</li>
-        <li>핵심 이해·문맥 추론·긴 문장 흐름 영역별 점수</li>
-        <li>독서 흐름을 끊는 나의 읽기 습관</li>
-        <li>내 수준에 맞는 원서 3권과 하루 독서 루틴</li>
-      </ul>
-
-      <a href="diagnosis.html" class="btn btn-wine">7분 무료 진단 시작하기 →</a>
-      <p class="diag-box-note">가입 없이 바로 확인하실 수 있어요 · 무료</p>
-    </div>
+    <a class="diag-slim" href="diagnosis.html">
+      <span class="diag-slim-ico">📖</span>
+      <span class="diag-slim-tx">
+        <b>신청 전에 내 리딩 레벨부터 확인해보세요</b>
+        실제 영어 지문을 읽고 독해력·읽기 속도·독서 습관을 확인해요 · 7분 무료
+      </span>
+      <span class="diag-slim-arrow">→</span>
+    </a>
   </div>
 </section>
 
