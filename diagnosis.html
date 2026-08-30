@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>영어 원서, 내 리딩 실력은 어느 정도일까? | LJ쌤 리딩 진단</title>
-  <meta name="description" content="LJ쌤과 함께하는 7분 원서 리딩 진단. 실제 영어 지문을 읽고 독해력·읽기 속도·독서 습관을 함께 확인하고, 현재 레벨과 지금 가장 잘 맞는 책까지 알려드려요.">
+  <meta name="description" content="LJ쌤과 함께하는 10분 원서 리딩 진단. 실제 영어 지문을 읽고 독해력·읽기 속도·독서 습관을 함께 확인하고, 현재 레벨과 지금 가장 잘 맞는 책까지 알려드려요.">
 
   <meta property="og:title" content="영어 원서, 내 리딩 실력은 어느 정도일까?">
   <meta property="og:description" content="실제 영어 지문을 읽고 독해력·읽기 속도·독서 습관을 함께 확인해보세요. 현재 레벨과 지금 가장 잘 맞는 책까지 알려드려요.">
@@ -427,7 +427,7 @@
 
     <h1 class="hero-h1">영어 원서,<br><em>내 리딩 실력은 어느 정도일까?</em></h1>
 
-    <p class="hero-lead">LJ쌤과 함께하는 7분 원서 리딩 진단</p>
+    <p class="hero-lead">LJ쌤과 함께하는 10분 원서 리딩 진단</p>
 
     <div class="teacher-card">
       <img class="teacher-logo" src="images/lj-logo.png" alt="LJ ENGLISH">
@@ -447,7 +447,7 @@
     </div>
 
     <button class="btn btn-wine" onclick="startTest()">진단 시작하기</button>
-    <p class="hero-note">약 7분 소요 · 무료 · 가입 없음</p>
+    <p class="hero-note">약 10분 소요 · 영어 지문 2개 · 무료 · 가입 없음</p>
 
     <div class="brand-foot">
       <span class="brand-mark">
@@ -484,20 +484,26 @@
   <div class="wrap" id="resContent"></div>
 </section>
 
-<!-- ══════════════════ 결과 메일로 받기 ══════════════════ -->
+<!-- ══════════════════ 결과 메일로 받기 ══════════════════
+     화면 하나를 두 자리에서 씁니다.
+       ① 결과를 보여드리기 직전 (openMailGate) — 여기서 명단이 쌓입니다
+       ② 결과를 다 보신 뒤 다시 부르실 때 (openMailScreen)
+     둘의 차이는 문구와 '건너뛰기 / 결과로 돌아가기' 버튼뿐입니다.
+══════════════════════════════════════════════════════ -->
 <section id="mail" class="screen">
   <div class="wrap" style="padding-top:44px;padding-bottom:80px;">
 
     <div id="mailForm">
-      <button class="back-btn" onclick="backToResult()" style="margin-bottom:18px;">← 결과로 돌아가기</button>
+      <button class="back-btn" id="mailBack" onclick="backToResult()" style="margin-bottom:18px;display:none;">← 결과로 돌아가기</button>
 
       <div class="r-card">
-        <div class="r-card-lbl">결과 메일로 받기</div>
-        <div class="mail-title">진단 결과를<br>메일로 보내드릴까요?</div>
+        <div class="r-card-lbl" id="mailLbl">결과가 준비됐어요</div>
+        <div class="mail-title" id="mailTitle">결과를 메일로도<br>보내드릴까요?</div>
         <p class="r-desc" id="mailSummary"></p>
         <p class="r-desc">
           레벨과 항목별 점수, 독서 습관 유형, 지금 바꾸실 것,
           <b>추천 원서 3권과 하루 루틴</b>까지 정리해서 보내드려요.
+          이 화면은 닫으면 다시 보기 어렵지만, <b>메일은 계속 남아요.</b>
           나중에 책 고르실 때 꺼내 보시면 좋아요.
         </p>
 
@@ -509,8 +515,9 @@
           <span>진단 결과 발송과 북클럽 안내에 이메일을 사용하는 데 동의해요.</span>
         </label>
 
-        <button class="btn btn-wine" id="mailBtn" onclick="submitMail()">결과 보내주세요</button>
+        <button class="btn btn-wine" id="mailBtn" onclick="submitMail()">메일로 받고 결과 보기</button>
         <p class="mail-status" id="mailStatus"></p>
+        <button class="btn btn-ghost" id="mailSkip" onclick="skipMail()" style="margin-top:10px;">메일 없이 결과만 볼게요</button>
         <p class="r-fine" style="margin-top:12px;">
           이메일 외에 다른 정보는 받지 않아요. 언제든 수신을 중단하실 수 있어요.
         </p>
@@ -523,7 +530,7 @@
       <p class="r-desc"><b id="mailDoneAddr"></b> 으로 진단 결과를 보내드렸어요.<br>
         몇 분 뒤에도 안 보이면 <b>스팸함</b>도 꼭 확인해 주세요.</p>
       <div class="res-actions" style="margin-top:24px;">
-        <button class="btn btn-outline" onclick="backToResult()">결과 다시 보기</button>
+        <button class="btn btn-wine" id="mailDoneBtn" onclick="backToResult()">결과 보러 가기</button>
       </div>
     </div>
 
@@ -570,8 +577,8 @@
 ══════════════════════════════════════════════════════════════════ */
 
 const LINKS = {
-  apply: 'index.html#apply',        // 북클럽 신청하기 (신청 폼 위치로 바로)
-  about: 'index.html',              // 북클럽 활동 자세히 보기 (소개 페이지 처음부터)
+  apply: 'index.html#apply',       // 북클럽 신청하기 (GitHub Pages 는 index.html 이 신청서)
+  about: 'index.html',             // 북클럽 활동 자세히 보기 (소개 페이지 처음부터)
   bookIntro: 'books-month.html?book='   // 월별 도서 소개 (뒤에 01~12 가 붙습니다)
 };
 
@@ -622,6 +629,24 @@ const CLUB_ACTIONS = {
       how: '한 달에 한 번 온라인이나 오프라인으로 만나서 책 수다를 떨어요. <b>얼굴 아는 사람들이랑 읽으면</b> 중간에 조용히 사라지기가 어려워지거든요.' }
   ]
 };
+
+/* ═══════════════════════════════════════════
+   이미 편하게 읽으시는 분(R4)용 활동 연결
+
+   R4 는 못 읽어서 막힌 분이 아닙니다. 여기에 방해 유형 처방을 그대로 들이대면
+   "내 얘기가 아닌데" 싶어져서 진단 전체가 틀린 것처럼 읽힙니다.
+   그래서 R4 에게는 '고치자'가 아니라 '읽고 나서 무엇을 더 하실까'로 방향을 돌립니다 —
+   난도를 올리는 게 아니라, 편하게 읽되 읽은 걸 영어로 이야기하고 생각을 정리하는 쪽.
+   (CLUB_ACTIONS 와 같은 모양이라 결과 화면 코드는 그대로 씁니다)
+═══════════════════════════════════════════ */
+const CLUB_ACTIONS_R4 = [
+  { ico: '🎤', name: '영어로 나누는 북토크',
+    how: '읽는 건 이미 되시니까, 이제 <b>읽은 걸 영어로 꺼내보는 자리</b>가 남았어요. 매달 한 번 모여서 그달 책을 주제로 이야기 나눠요. 혼자 읽으면 “아 좋았다”로 끝날 책이, 말로 꺼내는 순간 정리가 되더라고요.' },
+  { ico: '💭', name: '매일 생각 포인트 · 오늘의 질문',
+    how: '해석 질문이 아니에요. <b>“그래서 나는 어떻게 생각하나”</b>를 묻는 질문을 매일 하나씩 드려요. 답을 적어보시는 동안 책 내용이 저자 생각에서 <b>내 생각으로</b> 옮겨 붙어요.' },
+  { ico: '✍️', name: '필사 · 북토크 한 줄 공유',
+    how: '읽다가 걸린 문장이랑 그때 든 생각을 한 줄로 남기시면 돼요. 다른 분들 한 줄도 같이 보이는데, <b>같은 책을 이렇게 다르게 읽는구나</b> 하는 게 이 단계에선 제일 재밌으세요.' }
+];
 
 /* ═══════════════════════════════════════════
    구글 시트 미러링
@@ -684,7 +709,7 @@ const CLUB_BY_MONTH = {
 ═══════════════════════════════════════════ */
 const PASSAGES = {
   base: {
-    label: '지문',
+    label: '지문 1 / 2',
     guide: '평소 읽으시던 속도 그대로 읽어주세요. 빨리 읽으려고 애쓰지 않으셔도 돼요. 다 읽으시면 아래 버튼을 눌러주세요.',
     text: [
       "Most people believe that motivation comes first and action follows. They wait until they feel ready, until the mood is right. But anyone who has finished a long project knows that the order is usually reversed. Motivation is not the spark that lights the fire; it is the heat the fire gives off once it is already burning. That is why small beginnings matter more than grand plans. Ten minutes of work is not impressive, and that is precisely its advantage: it slips past the part of your mind that negotiates. The people who appear disciplined are rarely the ones with more willpower. They are the ones who made starting cheap."
@@ -696,15 +721,49 @@ const PASSAGES = {
       ['disciplined', '자제력 있는, 절제된'],
       ['willpower', '의지력']
     ]
+  },
+
+  /* 두 번째 지문 — 공통 4문항을 1개 이하로 맞히신 분께 나갑니다 */
+  easy: {
+    label: '지문 2 / 2',
+    guide: '두 번째 지문이에요. 이것도 <b>평소 속도</b> 그대로 편하게 읽어주세요.',
+    text: [
+      "When I was learning to cook, I tried to make a big dinner for my friends. I opened three books at the same time. Two hours later, the kitchen was a mess and nothing was ready, so my friends ate bread and cheese that night. The next week I chose one dish, wrote down five steps, and did not look at any other recipe. It was simple, but it was finished on time. My friend still says I am not a good cook, and she is right. But now I finish what I start. Doing one small thing well is better than doing five things badly."
+    ],
+    gloss: [
+      ['a mess', '엉망인 상태'],
+      ['dish', '요리 (한 가지 음식)'],
+      ['recipe', '조리법, 레시피'],
+      ['on time', '제시간에'],
+      ['badly', '형편없이, 서투르게']
+    ]
+  },
+
+  /* 두 번째 지문 — 공통 4문항을 2개 이상 맞히신 분께 나갑니다.
+     R4 가 너무 쉽게 나오지 않도록, 추상적이고 문장이 긴 글을 씁니다. */
+  hard: {
+    label: '지문 2 / 2',
+    guide: '두 번째 지문이에요. 앞 지문보다 조금 <b>빽빽하죠?</b> 그래도 평소 속도 그대로 읽어주세요.',
+    text: [
+      "We tend to assume that our preferences are the raw material of our decisions. Yet a considerable body of research suggests something less flattering: that preferences are often constructed on the spot, assembled out of whatever context happens to be available, and then reported back to us with a confidence that the evidence does not warrant. What follows from this is not that choice is an illusion, but that it is far more situational than we like to admit. Designing the circumstances of a decision may therefore matter more than deliberating within them. We give ourselves credit for the deliberation and none for the arrangement, which is precisely the wrong way round."
+    ],
+    gloss: [
+      ['preference', '선호, 취향'],
+      ['considerable', '상당한, 적지 않은'],
+      ['warrant', '정당화하다, 뒷받침하다'],
+      ['situational', '상황에 좌우되는'],
+      ['deliberate', '숙고하다, 곰곰이 따져보다']
+    ]
   }
 };
 
 /* ═══════════════════════════════════════════
-   독해 문항 (총 7문항) — 지문은 하나, 문항 난이도가 적응형입니다
+   독해 문항 (총 9문항) — 지문 2개, 두 번째 지문이 적응형입니다
 
-   공통 4문항을 먼저 풀고, 2개 이상 맞히면 심화 3문항 / 아니면 기초 3문항으로 갑니다.
-   세 묶음 모두 같은 지문에서 답을 찾을 수 있어야 합니다. 지문을 고치면 반드시
-   아래 문항의 근거 구절이 남아 있는지 확인하세요.
+   지문 1 을 읽고 공통 4문항을 풉니다. 2개 이상 맞히시면 어려운 지문 2(hard),
+   1개 이하면 쉬운 지문 2(easy) 가 나오고, 각각 5문항을 풉니다.
+   easy/hard 문항은 각자의 지문 2 에서 답을 찾습니다 (지문 1 이 아닙니다).
+   지문을 고치실 때는 해당 묶음 문항의 근거 구절이 남아 있는지 꼭 확인하세요.
 
    skill: main 핵심 / detail 세부 / infer 문맥 추론 / flow 긴 문장 흐름
    배점: 공통 1.0 · 기초 1.0 · 심화 1.4 (만점은 항상 심화 기준)
@@ -745,55 +804,90 @@ const RC = {
       a: 1 }
   ],
 
-  /* ── 기초 3문항 (공통에서 1개 이하 정답) ── */
+  /* ── 기초 5문항 · 지문 2(easy) 대상 (공통에서 1개 이하 정답) ── */
   easy: [
+    { skill: 'main',
+      q: '이 글의 핵심 교훈은?',
+      opts: ['요리는 여러 권의 책을 함께 봐야 잘할 수 있다.',
+             '한 가지를 잘 해내는 편이 여러 가지를 어설프게 하는 것보다 낫다.',
+             '친구를 초대하려면 미리 연습을 많이 해야 한다.',
+             '간단한 음식이 비싼 음식보다 항상 맛있다.'],
+      a: 1 },
+
     { skill: 'detail',
-      q: '글에 따르면, 사람들은 시작하기 전에 무엇을 기다리나요?',
-      opts: ['다른 사람이 먼저 시작하기를',
-             '준비된 기분이 들고 분위기가 맞기를',
-             '계획이 완벽하게 정리되기를',
-             '시간이 충분히 남기를'],
+      q: '첫 번째 저녁 식사에서 실제로 일어난 일은?',
+      opts: ['음식이 제시간에 완성되었다.',
+             '친구들이 오지 않았다.',
+             '아무것도 준비되지 않아 빵과 치즈를 먹었다.',
+             '요리책을 한 권만 보고 만들었다.'],
+      a: 2 },
+
+    { skill: 'infer',
+      q: '밑줄 부분의 의미로 가장 알맞은 것은?<br><span style="font-family:Georgia,serif;color:var(--wine-dark);">“the kitchen was <u>a mess</u>”</span>',
+      opts: ['부엌이 아주 조용했다',
+             '부엌이 엉망이 되어 있었다',
+             '부엌이 너무 좁았다',
+             '부엌이 아주 깨끗했다'],
       a: 1 },
 
     { skill: 'infer',
-      q: '글에 나온 <span style="font-family:Georgia,serif;color:var(--wine-dark);">willpower</span> 의 뜻으로 알맞은 것은?',
-      opts: ['체력', '의지력', '기억력', '집중력'],
+      q: '글쓴이가 “My friend still says I am not a good cook, and she is right.” 라고 쓴 이유로 가장 알맞은 것은?',
+      opts: ['요리 실력이 늘지 않아 속상해서',
+             '실력보다 끝까지 해내는 것이 더 중요하다고 말하려고',
+             '친구의 말이 틀렸다는 것을 보여주려고',
+             '요리를 그만두겠다고 알리려고'],
       a: 1 },
 
     { skill: 'flow',
-      q: '글쓴이는 큰 계획과 작은 시작 중 어느 쪽을 권하나요?',
-      opts: ['큰 계획 — 목표가 클수록 오래간다',
-             '작은 시작 — 부담이 적어야 이어진다',
-             '둘 다 필요 없다',
-             '상황에 따라 다르다고만 말한다'],
-      a: 1 }
+      q: '두 번째 시도가 성공한 이유로 글에서 제시된 것은?',
+      opts: ['재료를 더 많이 샀기 때문에',
+             '친구들이 도와주었기 때문에',
+             '요리 하나만 정하고 다른 조리법을 보지 않았기 때문에',
+             '시간을 두 배로 들였기 때문에'],
+      a: 2 }
   ],
 
-  /* ── 심화 3문항 (공통에서 2개 이상 정답) ── */
+  /* ── 심화 5문항 · 지문 2(hard) 대상 (공통에서 2개 이상 정답) ── */
   hard: [
-    { skill: 'flow',
-      q: '다음 문장에서 글쓴이가 <b>“그 점이 바로 장점”</b>이라고 말한 이유는?<br><span style="font-family:Georgia,serif;color:var(--wine-dark);">“Ten minutes of work is not impressive, and that is precisely its advantage.”</span>',
-      opts: ['짧게 일할수록 결과물의 질이 높아지기 때문에',
-             '대단해 보이지 않아서, 할지 말지 따지는 마음을 그냥 지나치기 때문에',
-             '남들에게 자랑하지 않아도 되기 때문에',
-             '10분이면 누구나 집중할 수 있기 때문에'],
+    { skill: 'main',
+      q: '글쓴이의 핵심 주장에 가장 가까운 것은?',
+      opts: ['선택은 결국 환상이므로 고민할 필요가 없다.',
+             '취향은 타고나는 것이라 바꾸기 어렵다.',
+             '고민의 내용보다, 결정이 이루어지는 상황을 미리 설계하는 것이 더 중요하다.',
+             '선택지를 많이 준비할수록 더 나은 결정을 내린다.'],
+      a: 2 },
+
+    { skill: 'detail',
+      q: '글에서 “선호(preference)” 에 대해 연구가 시사하는 바로 언급된 것은?',
+      opts: ['선호는 결정을 내리기 전에 이미 확고하게 정해져 있다.',
+             '선호는 그 자리의 맥락에 따라 즉석에서 만들어지는 경우가 많다.',
+             '선호는 훈련을 통해서만 바뀔 수 있다.',
+             '선호는 사람마다 거의 차이가 없다.'],
       a: 1 },
 
     { skill: 'infer',
-      q: '마지막 문장 <span style="font-family:Georgia,serif;color:var(--wine-dark);">“They are the ones who made starting cheap.”</span> 에서 <span style="font-family:Georgia,serif;color:var(--wine-dark);">cheap</span> 이 뜻하는 바는?',
-      opts: ['돈이 적게 드는 방법을 찾았다',
-             '시작에 드는 부담을 아주 작게 만들어 두었다',
-             '값싼 도구로 대충 해냈다',
-             '남의 도움을 싸게 얻었다'],
+      q: '밑줄 부분의 의미로 가장 알맞은 것은?<br><span style="font-family:Georgia,serif;color:var(--wine-dark);">“with a confidence that the evidence does not <u>warrant</u>”</span>',
+      opts: ['증거가 뒷받침해 주지 못하는 (근거 없는) 확신',
+             '증거가 경고하고 있는 확신',
+             '증거가 필요로 하는 확신',
+             '증거가 숨기고 있는 확신'],
+      a: 0 },
+
+    { skill: 'infer',
+      q: '마지막 문장 “which is precisely the wrong way round” 가 지적하는 것은?',
+      opts: ['사람들이 환경을 지나치게 중요하게 여긴다는 점',
+             '사람들이 숙고에는 공을 돌리면서 환경 설계의 몫은 인정하지 않는다는 점',
+             '사람들이 결정을 너무 빨리 내린다는 점',
+             '사람들이 타인의 조언을 너무 쉽게 따른다는 점'],
       a: 1 },
 
-    { skill: 'detail',
-      q: '글쓴이가 <span style="font-family:Georgia,serif;color:var(--wine-dark);">“the order is usually reversed”</span> 라고 할 때, 순서가 뒤집힌다는 두 가지는?',
-      opts: ['계획과 실행',
-             '의욕과 행동',
-             '노력과 재능',
-             '시작과 완성'],
-      a: 1 }
+    { skill: 'flow',
+      q: '“What follows from this is not that choice is an illusion, but that…” 이 문장이 글에서 하는 역할은?',
+      opts: ['앞의 내용을 뒤집어 반대 주장을 편다.',
+             '앞선 연구 결과를 구체적 사례로 바꿔 설명한다.',
+             '지나치게 나아간 결론을 막고, 더 정확한 결론으로 좁힌다.',
+             '새로운 주제를 도입하며 화제를 전환한다.'],
+      a: 2 }
   ]
 };
 
@@ -1029,7 +1123,7 @@ const LEVELS = {
   R4: {
     name: '논지와 행간을 읽는 단계',
     state: '문장의 뜻을 넘어서 <b>저자가 왜 이 순서로 말하는지</b>까지 따라가시는 단계예요. 문장이 길고 추상적인 글에서도 논지를 놓치지 않으세요.',
-    state2: '이제 필요한 건 더 쉬운 책이 아니에요. <b>읽는 양과 리듬</b>이에요. 난도를 낮추시는 것보다 꾸준히 읽을 구조를 만드시는 쪽이 훨씬 남는 게 많아요.',
+    state2: '그래서 이 단계에서 더 어려운 책을 찾으실 필요는 없어요. 편하게 읽으셔도 됩니다. 대신 <b>읽고 나서 그 책을 가지고 무엇을 하시느냐</b>가 남아요. 읽은 걸 영어로 이야기해보시고 생각을 정리해두시면, 같은 책에서 훨씬 많은 게 남습니다.',
     fit: { chap: 'Chapter 길이는 이제 제약이 안 돼요', pages: '분량 제약 없어요', kind: '연구 기반 논픽션, 문학 소설까지', avoid: '없어요' }
   }
 };
@@ -1073,13 +1167,16 @@ function buildFlow() {
   ];
 }
 
-/* 공통 4문항 성적에 따라 이어질 문항 묶음을 정합니다 (지문은 하나 그대로) */
+/* 공통 4문항 성적에 따라 두 번째 지문과 이어질 5문항을 정합니다 */
 function expandBranch() {
   const b = S.baseCorrect >= 2 ? 'hard' : 'easy';
   S.branch = b;
   const idx = S.flow.findIndex(f => f.t === 'branch');
   if (idx === -1) return;
-  S.flow.splice(idx, 1, ...RC[b].map((_, i) => ({ t: 'rc', p: b, i })));
+  S.flow.splice(idx, 1,
+    { t: 'passage', p: b },
+    ...RC[b].map((_, i) => ({ t: 'rc', p: b, i }))
+  );
 }
 
 function show(id) {
@@ -1114,8 +1211,8 @@ function render() {
   const area = document.getElementById('qArea');
   document.getElementById('backBtn').disabled = (S.step === 0);
 
-  // branch 확장 전에는 이어질 문항 3개를 미리 더해 진행률이 되돌아가지 않게 합니다
-  const total = S.flow.some(x => x.t === 'branch') ? S.flow.length + 2 : S.flow.length;
+  // branch 확장 전에는 이어질 지문 1 + 문항 5 를 미리 더해 진행률이 되돌아가지 않게 합니다
+  const total = S.flow.some(x => x.t === 'branch') ? S.flow.length + 5 : S.flow.length;
   document.getElementById('progFill').style.width = Math.round((S.step / (total - 1)) * 100) + '%';
 
   if (f.t === 'passage') return renderPassage(f, area);
@@ -1162,9 +1259,9 @@ function finishPassage(pid) {
 /* ── 독해 문항 ── */
 function renderRC(f, area) {
   const q = RC[f.p][f.i];
-  const P = PASSAGES.base;                     // 지문은 하나뿐입니다
+  const P = PASSAGES[f.p];                     // 그 문항이 딸린 지문을 보여줍니다
   const nth = (f.p === 'base' ? f.i + 1 : f.i + 5);
-  document.getElementById('counter').textContent = `독해 ${nth} / 7`;
+  document.getElementById('counter').textContent = `독해 ${nth} / 9`;
   const saved = S.rc[`${f.p}-${f.i}`];
 
   area.innerHTML = `
@@ -1316,9 +1413,9 @@ function scoreReading() {
 
   const pct = k => max[k] ? Math.round(got[k] / max[k] * 100) : 0;
 
-  // 읽기 효율 — 속도만으로 평가하지 않습니다 (지문이 하나라 base 값만 씁니다)
-  const secs  = S.time.base || 0;
-  const words = S.words.base || 0;
+  // 읽기 효율 — 속도만으로 평가하지 않습니다 (두 지문을 합쳐서 봅니다)
+  const secs  = (S.time.base || 0) + (S.time[S.branch] || 0);
+  const words = (S.words.base || 0) + (S.words[S.branch] || 0);
   const wpm   = secs > 0 ? Math.round(words / (secs / 60)) : 0;
   const acc   = total ? correct / total : 0;
   const effWpm = wpm * acc;                                  // 이해도를 유지한 채의 속도
@@ -1434,7 +1531,24 @@ function buildResult() {
   const books = recommendBooks(rd.level);
   const fit = clubFit(rd.level);
   const mins = recommendMinutes(rd);
-  const acts = CLUB_ACTIONS[ty.main] || CLUB_ACTIONS.D;   // 방해 유형에 맞는 북클럽 활동
+  // 이미 편하게 읽으시는 분(R4)에게는 '방해 요인을 고치자'가 아니라
+  // '편하게 읽고, 영어로 이야기하고, 생각을 정리하자'로 안내합니다.
+  const adv  = (rd.level === 'R4');
+  const acts = adv ? CLUB_ACTIONS_R4 : (CLUB_ACTIONS[ty.main] || CLUB_ACTIONS.D);
+
+  const clubTitle = adv
+    ? `이제 필요한 건 더 어려운 책이 아니라<br><em>같이 이야기할 사람</em>이에요.`
+    : `<em>${T.short}</em>에게 필요한 건<br>의지가 아니라 <em>구조</em>예요.`;
+
+  const clubIntro = adv
+    ? `원서는 이미 편하게 읽으시는 단계예요. 그래서 난도를 더 올리시라고 권하지 않을게요.
+       이 단계에서 남는 건 <b>읽고 나서 무엇을 하느냐</b>거든요.
+       LJ쌤의 영어 원서 북클럽은 <b>편하게 읽고, 그 책을 주제로 영어로 이야기 나누고,
+       생각을 정리해서 남기는</b> 시간에 무게를 둡니다.
+       참고로 읽는 습관 쪽에서는 <b>${T.name}</b> 성향이 가장 높게 나왔어요.`
+    : `가장 큰 방해 요인이 <b>${T.name}</b>으로 나왔어요.
+       LJ쌤의 영어 원서 북클럽에는 여기에 <b>딱 맞춰 대응하는 활동</b>이 있어요.
+       위에 드린 처방을 혼자 지키기 어려우시면, 이 세 가지가 대신 붙잡아드려요.`;
 
   const mm = Math.floor(rd.secs / 60), ss = rd.secs % 60;
   const timeStr = mm > 0 ? `${mm}분 ${ss}초` : `${ss}초`;
@@ -1493,7 +1607,7 @@ function buildResult() {
       <p class="r-fine" style="margin-top:14px;padding-top:13px;border-top:1px solid var(--border);">
         영어 지문 ${rd.words}단어를 직접 읽으시면서 나온 값이에요.
         진단 중에 단어 뜻은 ${S.glossOpens}번 확인하셨고, 지문은 ${S.rereads}번 다시 보셨어요.
-        ${S.branch === 'hard' ? '앞 문항을 잘 푸셔서 <b>더 어려운 문항</b>으로 이어졌어요.' : ''}
+        ${S.branch === 'hard' ? '앞 문항을 잘 푸셔서 <b>더 어려운 두 번째 지문</b>으로 이어졌어요.' : ''}
       </p>
     </div>
 
@@ -1598,14 +1712,8 @@ function buildResult() {
     <!-- ══ 진단 결과 → 북클럽 활동 연결 ══ -->
     <div class="club-card">
       <div class="club-lbl">LJ쌤과 함께하는 영어 원서 북클럽</div>
-      <div class="club-title">
-        <em>${T.short}</em>에게 필요한 건<br>의지가 아니라 <em>구조</em>예요.
-      </div>
-      <p class="club-intro">
-        가장 큰 방해 요인이 <b>${T.name}</b>으로 나왔어요.
-        LJ쌤의 영어 원서 북클럽에는 여기에 <b>딱 맞춰 대응하는 활동</b>이 있어요.
-        위에 드린 처방을 혼자 지키기 어려우시면, 이 세 가지가 대신 붙잡아드려요.
-      </p>
+      <div class="club-title">${clubTitle}</div>
+      <p class="club-intro">${clubIntro}</p>
 
       ${acts.map(a => `
         <div class="act">
@@ -1631,7 +1739,7 @@ function buildResult() {
     </div>
 
     <div class="res-actions">
-      <button class="btn btn-ghost" onclick="openMailScreen()">📩 결과 내 이메일로 받기</button>
+      <button class="btn btn-ghost" id="mailAgainBtn" onclick="openMailScreen()">📩 결과 내 이메일로 받기</button>
       <button class="btn btn-ghost" onclick="location.reload()">진단 다시 하기</button>
     </div>
 
@@ -1651,8 +1759,7 @@ function buildResult() {
       <p class="brand-copy">© LJ English · 함께 읽고, 나만의 영어가 쌓이는 곳</p>
     </div>`;
 
-  document.getElementById('resContent').innerHTML = html;
-  show('result');
+  document.getElementById('resContent').innerHTML = html;   // 그려만 두고 아직 보여드리지 않습니다
 
   track('diagnosis_complete', {
     level: rd.level, score: rd.totalScore, wpm: rd.wpm,
@@ -1688,6 +1795,9 @@ function buildResult() {
 
   const sm = document.getElementById('mailSummary');
   if (sm) sm.innerHTML = `진단 결과는 <b>${rd.level} · ${L.name}</b>, 독서 습관은 <b>${T.short}</b>으로 나왔어요.`;
+
+  // MAIL_PAYLOAD 까지 다 만들어진 뒤에 이메일을 여쭙고, 그 다음 결과를 열어드립니다
+  openMailGate();
 }
 
 /* 메일 본문에는 태그가 필요 없어서 걷어냅니다 */
@@ -1800,15 +1910,52 @@ function todayStr(d) {
    ⚠️ 개인 지메일 계정 기준 하루 100통 제한이 있습니다(워크스페이스는 1,500통).
 ══════════════════════════════════════════════════════════════════ */
 let MAIL_PAYLOAD = null;      // 결과가 만들어질 때 메일용 요약을 담아둡니다
+let MAIL_GATE = false;        // 지금이 '결과 보기 전' 단계인지
+let MAIL_SENT = false;        // 이미 이메일을 남기셨는지
 
+/* 화면 문구를 두 자리에 맞춰 바꿔 끼웁니다 */
+function setMailMode(gate) {
+  MAIL_GATE = gate;
+  const $ = id => document.getElementById(id);
+  $('mailBack').style.display = gate ? 'none' : '';
+  $('mailSkip').style.display = gate ? '' : 'none';
+  $('mailLbl').textContent    = gate ? '결과가 준비됐어요' : '결과 메일로 받기';
+  $('mailTitle').innerHTML    = gate ? '결과를 메일로도<br>보내드릴까요?'
+                                     : '진단 결과를<br>메일로 보내드릴까요?';
+  $('mailBtn').textContent    = gate ? '메일로 받고 결과 보기' : '결과 보내주세요';
+  $('mailDoneBtn').textContent = gate ? '결과 보러 가기' : '결과 다시 보기';
+}
+
+/* ① 결과를 보여드리기 직전 — 여기서 연락처가 쌓입니다 */
+function openMailGate() {
+  setMailMode(true);
+  track('mail_gate_view');
+  show('mail');
+}
+
+/* ② 결과를 다 보신 뒤 다시 부르시는 경우 */
 function openMailScreen() {
+  setMailMode(false);
   track('click_mail_open');
   show('mail');
   const el = document.getElementById('mailInput');
   if (el) el.focus();
 }
 
-function backToResult() { show('result'); }
+/* 건너뛰기 — 막지 않습니다. 막으면 결과를 못 본 채로 나가버리세요. */
+function skipMail() {
+  track('skip_mail');
+  show('result');
+}
+
+function backToResult() {
+  show('result');
+  // 이미 남기셨으면 결과 하단의 '이메일로 받기' 버튼은 숨깁니다
+  if (MAIL_SENT) {
+    const b = document.getElementById('mailAgainBtn');
+    if (b) b.style.display = 'none';
+  }
+}
 
 function submitMail() {
   const input  = document.getElementById('mailInput');
@@ -1847,6 +1994,7 @@ function submitMail() {
 
   // no-cors 라 응답을 읽을 수 없어서, 보낸 뒤 완료 화면으로 넘어갑니다
   setTimeout(() => {
+    MAIL_SENT = true;
     document.getElementById('mailForm').style.display = 'none';
     document.getElementById('mailDone').style.display = 'block';
     document.getElementById('mailDoneAddr').textContent = email;
